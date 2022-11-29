@@ -76,6 +76,11 @@ class Step
     private $output;
 
     /**
+     * @var array
+     */
+    private $files = [];
+
+    /**
      * @var ?Definition
      */
     private $definition;
@@ -163,6 +168,31 @@ class Step
     public function setLine(int $line): void
     {
         $this->line = $line;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEmbeddings()
+    {
+      $embeddings = [];
+      foreach ($this->files as $url) {
+        $embeddings[] = [
+          'mime_type' => 'image/url',
+          'name' => 'Screenshot.jpg',
+          'data' => base64_encode($url)
+        ];
+      }
+
+      return $embeddings;
+    }
+
+    /**
+     * @param array $files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
     }
 
     /**

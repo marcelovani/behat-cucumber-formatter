@@ -15,6 +15,7 @@ use Vanare\BehatCucumberJsonFormatter\Node;
 use Vanare\BehatCucumberJsonFormatter\Printer\FileOutputPrinter;
 use Vanare\BehatCucumberJsonFormatter\Renderer\JsonRenderer;
 use Vanare\BehatCucumberJsonFormatter\Renderer\RendererInterface;
+use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploaderEvent;
 
 class Formatter implements FormatterInterface
 {
@@ -48,6 +49,9 @@ class Formatter implements FormatterInterface
     /** @var bool */
     private $resultFilePerSuite = false;
 
+    /** @var array */
+    private $files = [];
+
     public function __construct(string $fileNamePrefix, string $outputDir)
     {
         $this->renderer = new JsonRenderer($this);
@@ -71,7 +75,17 @@ class Formatter implements FormatterInterface
             BehatEvent\OutlineTested::AFTER => 'onAfterOutlineTested',
             BehatEvent\StepTested::BEFORE => 'onBeforeStepTested',
             BehatEvent\StepTested::AFTER => 'onAfterStepTested',
+            ScreenshotUploaderEvent::UPLOAD => 'screenshotUploaded',
         ];
+    }
+
+    /**
+     * Keeps track of uploaded screenshots to add to json output.
+     *
+     * @param ScreenshotUploaderEvent $event
+     */
+    public function screenshotUploaded(ScreenshotUploaderEvent $event) {
+      $this->files[] = $event->getFilename();
     }
 
     /** @inheritdoc */
@@ -307,6 +321,10 @@ class Formatter implements FormatterInterface
         $step->setResult($result);
         $step->setResultCode($result->getResultCode());
         $step->setDuration($this->timer->getSeconds());
+        // Attach uploaded files to step.
+        $step->setFiles($this->files);
+        // Reset files.
+        $this->files = [];
 
 
         $match = ['location' => $result->getStepDefinition()->getPath()];
