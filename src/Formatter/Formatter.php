@@ -248,7 +248,6 @@ class Formatter implements FormatterInterface
             foreach ($this->currentScenario->getSteps() as &$step) {
                 if ($step->getResultCode() !== 0) {
                     $file = array_pop($this->files);
-                    var_dump('file ' , $file);
                     if (!empty($file)) {
                         $step->addEmbedding($file);
                     }
