@@ -78,7 +78,7 @@ class Step
     /**
      * @var array
      */
-    private $files = [];
+    private $embeddings = [];
 
     /**
      * @var ?Definition
@@ -175,24 +175,19 @@ class Step
      */
     public function getEmbeddings()
     {
-      $embeddings = [];
-      foreach ($this->files as $url) {
-        $embeddings[] = [
+      return $this->embeddings;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function addEmbedding($url)
+    {
+        $this->embeddings[] = [
           'mime_type' => 'image/url',
           'name' => 'Screenshot.jpg',
           'data' => base64_encode($url)
         ];
-      }
-
-      return $embeddings;
-    }
-
-    /**
-     * @param array $files
-     */
-    public function setFiles($files)
-    {
-        $this->files = $files;
     }
 
     /**

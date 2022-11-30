@@ -85,6 +85,9 @@ class Formatter implements FormatterInterface
      * @param ScreenshotUploaderEvent $event
      */
     public function screenshotUploaded(ScreenshotUploaderEvent $event) {
+      if (empty($event->getFilename())) {
+        return;
+      }
       $this->files[] = $event->getFilename();
     }
 
@@ -239,6 +242,19 @@ class Formatter implements FormatterInterface
             $this->currentFeature->addPassedScenario();
         } else {
             $this->currentFeature->addFailedScenario();
+            // Attach screenshots.
+            array_reverse($this->files);
+            $i=0;
+            foreach ($this->currentScenario->getSteps() as &$step) {
+                if ($step->getResultCode() !== 0) {
+                    $file = array_pop($this->files);
+                    var_dump('file ' , $file);
+                    if (!empty($file)) {
+                        $step->addEmbedding($file);
+                    }
+                }
+                $i++;
+            }
         }
 
         $this->currentScenario->setPassed($event->getTestResult()->isPassed());
@@ -321,10 +337,6 @@ class Formatter implements FormatterInterface
         $step->setResult($result);
         $step->setResultCode($result->getResultCode());
         $step->setDuration($this->timer->getSeconds());
-        // Attach uploaded files to step.
-        $step->setFiles($this->files);
-        // Reset files.
-        $this->files = [];
 
 
         $match = ['location' => $result->getStepDefinition()->getPath()];
