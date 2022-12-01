@@ -91,6 +91,21 @@ class Formatter implements FormatterInterface
       $this->files[] = $event->getFilename();
     }
 
+    /**
+     * Attaches screenshots to steps.
+     */
+    private function attachScreenshots() {
+      array_reverse($this->files);
+      foreach ($this->currentScenario->getSteps() as &$step) {
+        if ($step->getResultCode() !== 0) {
+          $file = array_pop($this->files);
+          if (!empty($file)) {
+            $step->addEmbedding($file);
+          }
+        }
+      }
+    }
+
     /** @inheritdoc */
     public function setFileName($fileName): void
     {
@@ -242,18 +257,7 @@ class Formatter implements FormatterInterface
             $this->currentFeature->addPassedScenario();
         } else {
             $this->currentFeature->addFailedScenario();
-            // Attach screenshots.
-            array_reverse($this->files);
-            $i=0;
-            foreach ($this->currentScenario->getSteps() as &$step) {
-                if ($step->getResultCode() !== 0) {
-                    $file = array_pop($this->files);
-                    if (!empty($file)) {
-                        $step->addEmbedding($file);
-                    }
-                }
-                $i++;
-            }
+            $this->attachScreenshots();
         }
 
         $this->currentScenario->setPassed($event->getTestResult()->isPassed());
@@ -300,6 +304,7 @@ class Formatter implements FormatterInterface
                 $this->currentFeature->addPassedScenario();
             } else {
                 $this->currentFeature->addFailedScenario();
+                $this->attachScreenshots();
             }
 
             $example->setPassed($scenarioPassed);
