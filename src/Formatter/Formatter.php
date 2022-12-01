@@ -15,7 +15,7 @@ use Vanare\BehatCucumberJsonFormatter\Node;
 use Vanare\BehatCucumberJsonFormatter\Printer\FileOutputPrinter;
 use Vanare\BehatCucumberJsonFormatter\Renderer\JsonRenderer;
 use Vanare\BehatCucumberJsonFormatter\Renderer\RendererInterface;
-use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploaderEvent;
+use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploadCompleteEvent;
 
 class Formatter implements FormatterInterface
 {
@@ -75,16 +75,16 @@ class Formatter implements FormatterInterface
             BehatEvent\OutlineTested::AFTER => 'onAfterOutlineTested',
             BehatEvent\StepTested::BEFORE => 'onBeforeStepTested',
             BehatEvent\StepTested::AFTER => 'onAfterStepTested',
-            ScreenshotUploaderEvent::UPLOAD => 'screenshotUploaded',
+            ScreenshotUploadCompleteEvent::NAME => 'screenshotUploaded',
         ];
     }
 
     /**
      * Keeps track of uploaded screenshots to add to json output.
      *
-     * @param ScreenshotUploaderEvent $event
+     * @param ScreenshotUploadCompleteEvent $event
      */
-    public function screenshotUploaded(ScreenshotUploaderEvent $event) {
+    public function screenshotUploaded(ScreenshotUploadCompleteEvent $event) {
       if (empty($event->getFilename())) {
         return;
       }
