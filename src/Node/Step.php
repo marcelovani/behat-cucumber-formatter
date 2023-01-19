@@ -185,7 +185,7 @@ class Step
     {
         $this->embeddings[] = [
           'mime_type' => 'image/url',
-          'name' => 'Screenshot.jpg',
+          'name' => 'Screenshot',
           'data' => base64_encode($url)
         ];
     }

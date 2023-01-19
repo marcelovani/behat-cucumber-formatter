@@ -31,6 +31,7 @@ class Extension implements ExtensionInterface
         $builder->children()->scalarNode('fileNamePrefix')->defaultValue('');
         $builder->children()->scalarNode('outputDir')->defaultValue('build/tests');
         $builder->children()->scalarNode('fileName');
+        $builder->children()->scalarNode('screenshotExtension');
         $builder->children()->booleanNode('resultFilePerSuite')->defaultFalse();
     }
 
@@ -40,6 +41,23 @@ class Extension implements ExtensionInterface
 
         $definition->addArgument($config['fileNamePrefix']);
         $definition->addArgument($config['outputDir']);
+
+        // Integration with other Behat extensions that provide screenshot services.
+        $imageUploaderService = null;
+        if (!empty($config['screenshotExtension'])) {
+          $tags = $container->findTaggedServiceIds('screenshot.service');
+          foreach (array_keys($tags) as $id) {
+            // Check if the container has the definitions for the service.
+            if ($container->hasDefinition($id)) {
+              $service = $container->get($id);
+              // Check if the configuration for the screenshot extension matches the namespace of the service.
+              if (strpos(get_class($service), $config['screenshotExtension']) !== false) {
+                $imageUploaderService = $service;
+              }
+            }
+          }
+        }
+        $definition->addArgument($imageUploaderService);
 
         if (!empty($config['fileName'])) {
             $definition->addMethodCall('setFileName', [$config['fileName']]);

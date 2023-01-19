@@ -15,7 +15,6 @@ use Vanare\BehatCucumberJsonFormatter\Node;
 use Vanare\BehatCucumberJsonFormatter\Printer\FileOutputPrinter;
 use Vanare\BehatCucumberJsonFormatter\Renderer\JsonRenderer;
 use Vanare\BehatCucumberJsonFormatter\Renderer\RendererInterface;
-use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploadCompleteEvent;
 
 class Formatter implements FormatterInterface
 {
@@ -49,14 +48,17 @@ class Formatter implements FormatterInterface
     /** @var bool */
     private $resultFilePerSuite = false;
 
-    /** @var array */
-    private $files = [];
+    /**
+     * The screenshot service, if available.
+     */
+    private $screenshotService;
 
-    public function __construct(string $fileNamePrefix, string $outputDir)
+    public function __construct(string $fileNamePrefix, string $outputDir, $screenshotService)
     {
         $this->renderer = new JsonRenderer($this);
         $this->printer = new FileOutputPrinter($fileNamePrefix, $outputDir);
         $this->timer = new Timer();
+        $this->screenshotService = $screenshotService;
     }
 
     /** @inheritdoc */
@@ -75,30 +77,22 @@ class Formatter implements FormatterInterface
             BehatEvent\OutlineTested::AFTER => 'onAfterOutlineTested',
             BehatEvent\StepTested::BEFORE => 'onBeforeStepTested',
             BehatEvent\StepTested::AFTER => 'onAfterStepTested',
-            ScreenshotUploadCompleteEvent::NAME => 'screenshotUploaded',
         ];
-    }
-
-    /**
-     * Keeps track of uploaded screenshots to add to json output.
-     *
-     * @param ScreenshotUploadCompleteEvent $event
-     */
-    public function screenshotUploaded(ScreenshotUploadCompleteEvent $event) {
-      if (empty($event->getFilename())) {
-        return;
-      }
-      $this->files[] = $event->getFilename();
     }
 
     /**
      * Attaches screenshots to steps.
      */
     private function attachScreenshots() {
-      array_reverse($this->files);
+      if (!$this->screenshotService) {
+        return;
+      }
+
+      $files = $this->screenshotService->getImages();
+      array_reverse($files);
       foreach ($this->currentScenario->getSteps() as &$step) {
         if ($step->getResultCode() !== 0) {
-          $file = array_pop($this->files);
+          $file = array_pop($files);
           if (!empty($file)) {
             $step->addEmbedding($file);
           }
