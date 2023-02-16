@@ -89,6 +89,10 @@ class Formatter implements FormatterInterface
       }
 
       $files = $this->screenshotService->getImages();
+      if (empty($files)) {
+        return;
+      }
+
       array_reverse($files);
       foreach ($this->currentScenario->getSteps() as &$step) {
         if ($step->getResultCode() !== 0) {
