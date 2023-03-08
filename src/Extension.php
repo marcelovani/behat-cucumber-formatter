@@ -53,6 +53,7 @@ class Extension implements ExtensionInterface
               // Check if the configuration for the screenshot extension matches the namespace of the service.
               if (strpos(get_class($service), $config['screenshotExtension']) !== false) {
                 $imageUploaderService = $service;
+                break;
               }
             }
           }
