@@ -51,7 +51,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::passing1()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -68,7 +69,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::eat()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -85,7 +87,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::hungry()"
-                  }
+                  },
+                  "embeddings": []
                 }
               ],
               "type": "scenario_outline"
@@ -112,7 +115,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::passing1()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -129,7 +133,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::eat()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -147,7 +152,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::hungry()"
-                  }
+                  },
+                  "embeddings": []
                 }
               ],
               "type": "scenario_outline"
@@ -174,7 +180,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::passing1()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -191,7 +198,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::eat()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -209,7 +217,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::hungry()"
-                  }
+                  },
+                  "embeddings": []
                 }
               ],
               "type": "scenario_outline"
@@ -236,7 +245,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::passing1()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -253,7 +263,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::eat()"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "result": {
@@ -270,7 +281,8 @@ Feature: Eat cukes Example
                       }
                     ],
                     "location": "ExampleFeatureContext::hungry()"
-                  }
+                  },
+                  "embeddings": []
                 }
               ],
               "type": "scenario_outline"

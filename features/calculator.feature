@@ -54,7 +54,8 @@ Feature: Calculator example
                   "result": {
                     "duration": 12345,
                     "status": "passed"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "keyword": "When",
@@ -66,7 +67,8 @@ Feature: Calculator example
                   "result": {
                     "duration": 12345,
                     "status": "passed"
-                  }
+                  },
+                  "embeddings": []
                 },
                 {
                   "keyword": "Then",
@@ -83,7 +85,8 @@ Feature: Calculator example
                   "result": {
                     "duration": 12345,
                     "status": "passed"
-                  }
+                  },
+                  "embeddings": []
                 }
               ],
               "type": "scenario"
