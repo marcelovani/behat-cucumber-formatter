@@ -150,6 +150,7 @@ class JsonRenderer implements RendererInterface
             'line' => $step->getLine(),
             'match' => $step->getMatch(),
             'result' => $step->getProcessedResult(),
+            'embeddings' => $step->getEmbeddings(),
         ];
     }
 

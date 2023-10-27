@@ -48,11 +48,17 @@ class Formatter implements FormatterInterface
     /** @var bool */
     private $resultFilePerSuite = false;
 
-    public function __construct(string $fileNamePrefix, string $outputDir)
+    /**
+     * The screenshot service, if available.
+     */
+    private $screenshotService;
+
+    public function __construct(string $fileNamePrefix, string $outputDir, $screenshotService)
     {
         $this->renderer = new JsonRenderer($this);
         $this->printer = new FileOutputPrinter($fileNamePrefix, $outputDir);
         $this->timer = new Timer();
+        $this->screenshotService = $screenshotService;
     }
 
     /** @inheritdoc */
@@ -72,6 +78,35 @@ class Formatter implements FormatterInterface
             BehatEvent\StepTested::BEFORE => 'onBeforeStepTested',
             BehatEvent\StepTested::AFTER => 'onAfterStepTested',
         ];
+    }
+
+    /**
+     * Attaches screenshots to steps.
+     */
+    private function attachScreenshots() {
+      if (!$this->screenshotService) {
+        return;
+      }
+
+      $steps = $this->currentScenario->getSteps();
+      if (empty($steps)) {
+        return;
+      }
+
+      $files = $this->screenshotService->getImages();
+      if (empty($files)) {
+        return;
+      }
+      array_reverse($files);
+
+      foreach ($steps as &$step) {
+        if ($step->getResultCode() !== 0) {
+          $file = array_pop($files);
+          if (!empty($file)) {
+            $step->addEmbedding($file);
+          }
+        }
+      }
     }
 
     /** @inheritdoc */
@@ -225,6 +260,7 @@ class Formatter implements FormatterInterface
             $this->currentFeature->addPassedScenario();
         } else {
             $this->currentFeature->addFailedScenario();
+            $this->attachScreenshots();
         }
 
         $this->currentScenario->setPassed($event->getTestResult()->isPassed());
@@ -271,6 +307,7 @@ class Formatter implements FormatterInterface
                 $this->currentFeature->addPassedScenario();
             } else {
                 $this->currentFeature->addFailedScenario();
+                $this->attachScreenshots();
             }
 
             $example->setPassed($scenarioPassed);

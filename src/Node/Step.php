@@ -76,6 +76,11 @@ class Step
     private $output;
 
     /**
+     * @var array
+     */
+    private $embeddings = [];
+
+    /**
      * @var ?Definition
      */
     private $definition;
@@ -163,6 +168,26 @@ class Step
     public function setLine(int $line): void
     {
         $this->line = $line;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEmbeddings()
+    {
+      return $this->embeddings;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function addEmbedding($url)
+    {
+        $this->embeddings[] = [
+          'mime_type' => 'image/url',
+          'name' => 'Screenshot',
+          'data' => base64_encode($url)
+        ];
     }
 
     /**

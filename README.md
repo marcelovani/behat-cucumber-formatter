@@ -33,6 +33,7 @@ default:
             fileNamePrefix: report
             resultFilePerSuite: true
             outputDir: %paths.base%/build/tests
+            screenshotExtension: Bex\Behat\ScreenshotExtension
 ```
 
 Then you can run:
@@ -49,6 +50,7 @@ bin/behat -f cucumber_json
 Only applicable when `resultFilePerSuite` is not enabled.
 - `resultFilePerSuite` _(optional)_: The default behaviour is to generate a single report named `all.json`.
 If this option is set to `true`, a report will be created per behat suite.
+- `screenshotExtension` _(optional)_: The name of the extension to be used to take screenshots.
 
 ## Licence
 
