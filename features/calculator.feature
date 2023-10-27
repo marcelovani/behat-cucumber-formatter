@@ -31,7 +31,7 @@ Feature: Calculator example
           "elements": [
             {
               "description": "You can use *asciidoc markup* in _feature_ #description#.\n\nNOTE: This is a very important feature!",
-              "id": "calculator;adding-numbers",
+              "id": "calculator;adding-numbers---3",
               "keyword": "Scenario",
               "line": 3,
               "name": "Adding numbers",

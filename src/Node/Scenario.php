@@ -123,7 +123,7 @@ class Scenario
             '%s;%s%s',
             $this->getFeature()->getId(),
             preg_replace('/\s/', '-', mb_strtolower($this->getName(), 'UTF-8')),
-            $this->getType() === 'scenario_outline' ? '---' . $this->getLine() : ''
+            '---' . $this->getLine()
         );
     }
 
