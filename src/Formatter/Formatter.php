@@ -53,7 +53,7 @@ class Formatter implements FormatterInterface
      */
     private $screenshotService;
 
-    public function __construct(string $fileNamePrefix, string $outputDir, $screenshotService)
+    public function __construct(string $fileNamePrefix, string $outputDir, $screenshotService = null)
     {
         $this->renderer = new JsonRenderer($this);
         $this->printer = new FileOutputPrinter($fileNamePrefix, $outputDir);
